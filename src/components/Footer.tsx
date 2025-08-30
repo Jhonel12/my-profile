@@ -1,30 +1,30 @@
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react'
+import { Facebook, Github, Linkedin, Mail, Twitter } from "lucide-react";
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   const socialLinks = [
     {
-      name: 'GitHub',
-      url: 'https://github.com/jhonelmira',
+      name: "GitHub",
+      url: "https://github.com/jhonel12",
       icon: Github,
     },
     {
-      name: 'LinkedIn',
-      url: 'https://linkedin.com/in/jhonelmira',
+      name: "LinkedIn",
+      url: "https://linkedin.com/in/jhonel-mira",
       icon: Linkedin,
     },
     {
-      name: 'Twitter',
-      url: 'https://twitter.com/jhonelmira',
-      icon: Twitter,
+      name: "facebook",
+      url: "https://facebook.com/jhonelmira",
+      icon: Facebook,
     },
     {
-      name: 'Email',
-      url: 'mailto:jhonel.mira@example.com',
+      name: "Email",
+      url: "https://mail.google.com/mail/?view=cm&fs=1&to=jhonelmira@gmail.com",
       icon: Mail,
     },
-  ]
+  ];
 
   return (
     <footer className="bg-white dark:bg-dark-900 border-t border-gray-200 dark:border-dark-700">
@@ -34,32 +34,46 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-2xl font-bold gradient-text">Jhonel G. Mira</h3>
             <p className="text-gray-600 dark:text-gray-400 max-w-md">
-              Full Stack Developer passionate about creating innovative web solutions 
-              and turning ideas into reality through code.
+              Full Stack Developer passionate about creating innovative web
+              solutions and turning ideas into reality through code.
             </p>
           </div>
 
           {/* Quick Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Quick Links</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Quick Links
+            </h4>
             <ul className="space-y-2">
               <li>
-                <a href="/" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                <a
+                  href="/"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                >
                   Home
                 </a>
               </li>
               <li>
-                <a href="/about" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                <a
+                  href="/about"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                >
                   About
                 </a>
               </li>
               <li>
-                <a href="/projects" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                <a
+                  href="/projects"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                >
                   Projects
                 </a>
               </li>
               <li>
-                <a href="/contact" className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200">
+                <a
+                  href="/contact"
+                  className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 transition-colors duration-200"
+                >
                   Contact
                 </a>
               </li>
@@ -68,7 +82,9 @@ const Footer = () => {
 
           {/* Social Links */}
           <div className="space-y-4">
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">Connect</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white">
+              Connect
+            </h4>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
                 <a
@@ -97,7 +113,7 @@ const Footer = () => {
         </div>
       </div>
     </footer>
-  )
-}
+  );
+};
 
-export default Footer
+export default Footer;

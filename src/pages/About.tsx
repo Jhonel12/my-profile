@@ -1,45 +1,57 @@
-import { motion } from 'framer-motion'
-import { Calendar, MapPin, GraduationCap, Briefcase, Award } from 'lucide-react'
+import { motion } from "framer-motion";
+import {
+  Calendar,
+  MapPin,
+  GraduationCap,
+  Briefcase,
+  Award,
+} from "lucide-react";
 
 const About = () => {
   const experiences = [
     {
-      title: 'Senior Full Stack Developer',
-      company: 'Tech Solutions Inc.',
-      period: '2022 - Present',
-      description: 'Leading development of enterprise web applications using React, Node.js, and cloud technologies.',
+      title: "Full Stack Developer",
+      company: "DMW Region 10",
+      period: "2025 - Present",
+      description:
+        "Building and maintaining full-stack applications using React.js for the frontend and Laravel with MySQL for the backend to support government systems and operations.",
     },
+
     {
-      title: 'Full Stack Developer',
-      company: 'Digital Innovations',
-      period: '2020 - 2022',
-      description: 'Developed and maintained multiple client projects using modern web technologies.',
+      title: "Full Stack Developer",
+      company: "DOLE Cagayan de Oro Field Office",
+      period: "2024",
+      description:
+        "Developing and managing full-stack applications to support internal operations, utilizing React.js for the frontend and Laravel with MySQL for the backend.",
     },
+
     {
-      title: 'Frontend Developer',
-      company: 'Web Studio',
-      period: '2018 - 2020',
-      description: 'Created responsive and interactive user interfaces for various web applications.',
+      title: "Junior Web Developer (OJT Internship)",
+      company: "CK",
+      period: "March 2024 - May 2024",
+      description:
+        "Worked on full-stack web development using Laravel and Blade templating for the frontend, contributing to building and maintaining web applications during the internship.",
     },
-  ]
+  ];
 
   const education = [
     {
-      degree: 'Bachelor of Science in Computer Science',
-      school: 'University of Technology',
-      period: '2014 - 2018',
-      description: 'Graduated with honors, specialized in software engineering and web development.',
+      degree: "Bachelor of Science in Information Technology (BSIT)",
+      school: "Capitol University",
+      period: "2019 - 2024",
+      description:
+        "Completed the BSIT program with a focus on software development, web technologies, and full-stack application development.",
     },
-  ]
+  ];
 
   const skills = [
-    { name: 'React', level: 90 },
-    { name: 'TypeScript', level: 85 },
-    { name: 'Node.js', level: 80 },
-    { name: 'Python', level: 75 },
-    { name: 'MongoDB', level: 80 },
-    { name: 'AWS', level: 70 },
-  ]
+    { name: "React", level: 90 },
+    { name: "TypeScript", level: 85 },
+    { name: "Node.js", level: 80 },
+    { name: "Python", level: 75 },
+    { name: "Laravel", level: 80 },
+    { name: "MySQL", level: 85 },
+  ];
 
   return (
     <div className="pt-16">
@@ -56,9 +68,9 @@ const About = () => {
               About <span className="gradient-text">Me</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              I'm a passionate Full Stack Developer with over 5 years of experience 
-              creating innovative web solutions. I love turning complex problems into 
-              simple, beautiful, and intuitive designs.
+              I'm a passionate Full Stack Developer with over 2 years of
+              experience creating innovative web solutions. I love turning
+              complex problems into simple, beautiful, and intuitive designs.
             </p>
           </motion.div>
 
@@ -82,7 +94,8 @@ const About = () => {
                           className="w-full h-full object-cover rounded-full"
                           onError={(e) => {
                             // Fallback to placeholder if image doesn't load
-                            e.currentTarget.src = 'https://via.placeholder.com/192x192/3b82f6/ffffff?text=JG'
+                            e.currentTarget.src =
+                              "https://via.placeholder.com/192x192/3b82f6/ffffff?text=JG";
                           }}
                         />
                       </div>
@@ -95,30 +108,41 @@ const About = () => {
               </h2>
               <div className="space-y-4">
                 <div className="flex items-center space-x-3">
-                  <MapPin className="text-primary-600 dark:text-primary-400" size={20} />
+                  <MapPin
+                    className="text-primary-600 dark:text-primary-400"
+                    size={20}
+                  />
                   <span className="text-gray-600 dark:text-gray-400">
-                    Based in Manila, Philippines
+                    Based in Cagayan de Oro City, Philippines
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Calendar className="text-primary-600 dark:text-primary-400" size={20} />
+                  <Calendar
+                    className="text-primary-600 dark:text-primary-400"
+                    size={20}
+                  />
                   <span className="text-gray-600 dark:text-gray-400">
                     Available for freelance opportunities
                   </span>
                 </div>
                 <div className="flex items-center space-x-3">
-                  <Award className="text-primary-600 dark:text-primary-400" size={20} />
+                  <Award
+                    className="text-primary-600 dark:text-primary-400"
+                    size={20}
+                  />
                   <span className="text-gray-600 dark:text-gray-400">
-                    5+ years of professional experience
+                    2+ years of coding experience
                   </span>
                 </div>
               </div>
 
               <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                I'm a dedicated developer who believes in writing clean, maintainable code 
-                and creating user experiences that make a difference. When I'm not coding, 
-                you can find me exploring new technologies, contributing to open-source 
-                projects, or sharing knowledge with the developer community.
+                I'm a dedicated developer passionate about writing clean,
+                maintainable code and building user experiences that matter. I
+                am constantly self-learning, exploring new technologies, and
+                improving my skills. Outside of coding, I enjoy contributing to
+                open-source projects and sharing knowledge with the developer
+                community.
               </p>
             </motion.div>
 
@@ -184,7 +208,10 @@ const About = () => {
               >
                 <div className="flex items-start space-x-4">
                   <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center flex-shrink-0">
-                    <Briefcase size={24} className="text-primary-600 dark:text-primary-400" />
+                    <Briefcase
+                      size={24}
+                      className="text-primary-600 dark:text-primary-400"
+                    />
                   </div>
                   <div className="flex-1">
                     <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
@@ -233,7 +260,10 @@ const About = () => {
                 className="card text-center"
               >
                 <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <GraduationCap size={32} className="text-primary-600 dark:text-primary-400" />
+                  <GraduationCap
+                    size={32}
+                    className="text-primary-600 dark:text-primary-400"
+                  />
                 </div>
                 <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
                   {edu.degree}
@@ -253,7 +283,7 @@ const About = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default About
+export default About;

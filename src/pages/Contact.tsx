@@ -64,7 +64,7 @@ const Contact = () => {
       icon: MapPin,
       title: "Location",
       value: "Cagayan de Oro, Philippines",
-      link: "#",
+      link: "https://www.google.com/maps/place/Sto.+Ni%C3%B1o,+Lapasan,+Cagayan+de+Oro,+Philippines/@8.4824,124.6472,17z",
     },
   ];
 
