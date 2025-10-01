@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { ExternalLink, Github, Globe, Code, Database, Smartphone } from 'lucide-react'
+import { ExternalLink, Github, Globe, Code } from 'lucide-react'
 import { useState } from 'react'
 
 const Projects = () => {
