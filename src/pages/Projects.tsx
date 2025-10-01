@@ -6,68 +6,38 @@ const Projects = () => {
   const [selectedCategory, setSelectedCategory] = useState('All')
   const projects = [
     {
-      title: 'E-Commerce Platform',
-      description: 'A full-stack e-commerce platform built with React, Node.js, and MongoDB. Features include user authentication, product management, shopping cart, and payment integration.',
+      title: 'Portfolio Website',
+      description: 'A modern, responsive portfolio website showcasing skills and projects with smooth animations and dark mode support.',
       image: '/api/placeholder/600/400',
-      technologies: ['React', 'Node.js', 'MongoDB', 'Stripe', 'Redux'],
-      category: 'Full Stack',
-      liveUrl: 'https://ecommerce-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/ecommerce',
-      icon: Globe,
-    },
-    {
-      title: 'Task Management App',
-      description: 'A collaborative task management application with real-time updates, drag-and-drop functionality, and team collaboration features.',
-      image: '/api/placeholder/600/400',
-      technologies: ['React', 'TypeScript', 'Socket.io', 'Express', 'PostgreSQL'],
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vite'],
       category: 'Web App',
-      liveUrl: 'https://task-app-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/task-app',
-      icon: Code,
-    },
-    {
-      title: 'Mobile Fitness Tracker',
-      description: 'A React Native mobile app for tracking workouts, nutrition, and fitness goals with data visualization and social features.',
-      image: '/api/placeholder/600/400',
-      technologies: ['React Native', 'Firebase', 'Redux', 'Chart.js', 'Expo'],
-      category: 'Mobile',
-      liveUrl: 'https://fitness-app-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/fitness-app',
-      icon: Smartphone,
-    },
-    {
-      title: 'Data Analytics Dashboard',
-      description: 'An interactive dashboard for visualizing business metrics and KPIs with real-time data updates and customizable charts.',
-      image: '/api/placeholder/600/400',
-      technologies: ['React', 'D3.js', 'Python', 'FastAPI', 'AWS'],
-      category: 'Data',
-      liveUrl: 'https://dashboard-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/dashboard',
-      icon: Database,
-    },
-    {
-      title: 'Social Media Clone',
-      description: 'A social media platform with features like posts, comments, likes, user profiles, and real-time notifications.',
-      image: '/api/placeholder/600/400',
-      technologies: ['React', 'GraphQL', 'Apollo', 'MongoDB', 'AWS S3'],
-      category: 'Social',
-      liveUrl: 'https://social-app-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/social-app',
+      liveUrl: 'https://portfolio-demo.com',
+      githubUrl: 'https://github.com/jhonelmira/portfolio',
       icon: Globe,
     },
     {
-      title: 'AI Chat Application',
-      description: 'An AI-powered chat application with natural language processing, sentiment analysis, and intelligent responses.',
+      title: 'Skin Avenue Aesthetic',
+      description: 'A professional website for Skin Avenue Aesthetic medical spa, featuring services like Botox, lip fillers, and CO2 laser resurfacing treatments.',
       image: '/api/placeholder/600/400',
-      technologies: ['React', 'Python', 'TensorFlow', 'OpenAI API', 'WebSocket'],
-      category: 'AI/ML',
-      liveUrl: 'https://ai-chat-demo.com',
-      githubUrl: 'https://github.com/jhonelmira/ai-chat',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      category: 'Web App',
+      liveUrl: 'https://skinavenueaesthetic.com/',
+      githubUrl: 'https://github.com/jhonelmira/skin-avenue-aesthetic',
+      icon: Globe,
+    },
+    {
+      title: 'Mainte-Go',
+      description: 'A comprehensive web platform designed to streamline maintenance services and improve operational efficiency for service providers.',
+      image: '/api/placeholder/600/400',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
+      category: 'Web App',
+      liveUrl: 'https://mainte-go.com/',
+      githubUrl: 'https://github.com/jhonelmira/mainte-go',
       icon: Code,
     },
   ]
 
-  const categories = ['All', 'Full Stack', 'Web App', 'Mobile', 'Data', 'Social', 'AI/ML']
+  const categories = ['All', 'Web App']
 
   // Filter projects based on selected category
   const filteredProjects = selectedCategory === 'All' 
@@ -89,8 +59,8 @@ const Projects = () => {
               My <span className="gradient-text">Projects</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Here's a collection of projects I've worked on, showcasing my skills 
-              in full-stack development, mobile apps, and innovative solutions.
+              Here's a collection of web applications I've built, showcasing my skills 
+              in modern web development, user interface design, and full-stack solutions.
             </p>
           </motion.div>
 
