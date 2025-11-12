@@ -8,17 +8,17 @@ const Projects = () => {
     {
       title: 'Portfolio Website',
       description: 'A modern, responsive portfolio website showcasing skills and projects with smooth animations and dark mode support.',
-      image: '/api/placeholder/600/400',
+      image: 'https://s.wordpress.com/mshots/v1/https://my-profile-jhonel.vercel.app/?w=800',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vite'],
       category: 'Web App',
-      liveUrl: 'https://portfolio-demo.com',
+      liveUrl: 'https://my-profile-jhonel.vercel.app/',
       githubUrl: 'https://github.com/jhonelmira/portfolio',
       icon: Globe,
     },
     {
       title: 'Skin Avenue Aesthetic',
       description: 'A professional website for Skin Avenue Aesthetic medical spa, featuring services like Botox, lip fillers, and CO2 laser resurfacing treatments.',
-      image: '/api/placeholder/600/400',
+      image: 'https://s.wordpress.com/mshots/v1/https://skinavenueaesthetic.com/?w=800',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
       category: 'Web App',
       liveUrl: 'https://skinavenueaesthetic.com/',
@@ -28,12 +28,32 @@ const Projects = () => {
     {
       title: 'Mainte-Go',
       description: 'A comprehensive web platform designed to streamline maintenance services and improve operational efficiency for service providers.',
-      image: '/api/placeholder/600/400',
+      image: 'https://s.wordpress.com/mshots/v1/http://mainte-go.com/?w=800',
       technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
       category: 'Web App',
-      liveUrl: 'https://mainte-go.com/',
+      liveUrl: 'http://mainte-go.com/',
       githubUrl: 'https://github.com/jhonelmira/mainte-go',
       icon: Code,
+    },
+    {
+      title: 'DMW Survey Platform',
+      description: 'An online survey tool enabling distributed teams to capture feedback and track responses through a modern, responsive interface.',
+      image: 'https://s.wordpress.com/mshots/v1/https://dmw-survey.vercel.app/?w=800',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
+      category: 'Web App',
+      liveUrl: 'https://dmw-survey.vercel.app/',
+      githubUrl: '',
+      icon: Globe,
+    },
+    {
+      title: 'DMW CIMS Portal',
+      description: 'A credentialed web portal that streamlines access to internal management features with a clean login experience.',
+      image: 'https://s.wordpress.com/mshots/v1/https://dmw-cims.vercel.app/login?w=800',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS'],
+      category: 'Web App',
+      liveUrl: 'https://dmw-cims.vercel.app/login',
+      githubUrl: '',
+      icon: Globe,
     },
   ]
 
@@ -116,9 +136,24 @@ const Projects = () => {
               >
                 {/* Project Image */}
                 <div className="relative mb-6 overflow-hidden rounded-lg">
-                  <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
-                    <project.icon size={64} className="text-primary-600 dark:text-primary-400" />
-                  </div>
+                  {project.image ? (
+                    <img
+                      src={project.image}
+                      alt={project.title}
+                      loading="lazy"
+                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
+                      onError={(e) => {
+                        if (!e.currentTarget.dataset.fallback) {
+                          e.currentTarget.dataset.fallback = 'true'
+                          e.currentTarget.src = '/api/placeholder/600/400'
+                        }
+                      }}
+                    />
+                  ) : (
+                    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
+                      <project.icon size={64} className="text-primary-600 dark:text-primary-400" />
+                    </div>
+                  )}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
                     {project.liveUrl && (
                       <a

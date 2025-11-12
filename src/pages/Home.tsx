@@ -1,8 +1,10 @@
 import { motion } from "framer-motion";
 import { ArrowRight, Code, Database, Globe, Smartphone } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTheme } from "../hooks/useTheme";
 
 const Home = () => {
+  const { isDark } = useTheme();
   const skills = [
     {
       icon: Code,
@@ -75,22 +77,17 @@ const Home = () => {
                   <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full p-1 transition-all duration-300 group-hover:rotate-6">
                     <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
                       <img
-                        src="/profile-image.jpg" // Replace with your image path
+                        src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
                         alt="Jhonel G. Mira"
                         className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
                         onError={(e) => {
-                          e.currentTarget.src =
-                            "https://via.placeholder.com/256x256/3b82f6/ffffff?text=JG";
+                          if (!e.currentTarget.dataset.fallback) {
+                            e.currentTarget.dataset.fallback = "true";
+                            e.currentTarget.src = "/profile-image.jpg";
+                          }
                         }}
                       />
                     </div>
-                  </div>
-                  {/* Decorative elements */}
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-400 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1">
-                    <span className="text-xs font-bold text-gray-900">✨</span>
-                  </div>
-                  <div className="absolute -bottom-2 -left-2 w-6 h-6 bg-green-400 rounded-full flex items-center justify-center transition-transform duration-300 group-hover:-translate-x-1 group-hover:translate-y-1">
-                    <span className="text-xs font-bold text-white">🚀</span>
                   </div>
                 </div>
               </div>

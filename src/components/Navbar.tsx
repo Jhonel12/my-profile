@@ -26,11 +26,15 @@ const Navbar: React.FC = () => {
           <Link to="/" className="flex items-center space-x-3">
             <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-600 dark:border-primary-400">
               <img
-                src="/profile-image.jpg"
+                src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
                 alt="Jhonel G. Mira"
                 className="w-full h-full object-cover"
                 onError={(e) => {
-                  (e.currentTarget as HTMLImageElement).src = 'https://via.placeholder.com/40x40/3b82f6/ffffff?text=JG';
+                  const target = e.currentTarget as HTMLImageElement;
+                  if (!target.dataset.fallback) {
+                    target.dataset.fallback = "true";
+                    target.src = "/profile-image.jpg";
+                  }
                 }}
               />
             </div>
