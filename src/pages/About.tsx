@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useTheme } from "../hooks/useTheme";
 import {
   Calendar,
   MapPin,
@@ -8,6 +9,8 @@ import {
 } from "lucide-react";
 
 const About = () => {
+  const { isDark } = useTheme();
+
   const experiences = [
     {
       title: "Full Stack Developer",
@@ -45,10 +48,11 @@ const About = () => {
   ];
 
   const skills = [
-    { name: "React", level: 90 },
+    { name: "React", level: 80 },
     { name: "TypeScript", level: 85 },
-    { name: "Node.js", level: 80 },
-    { name: "Python", level: 75 },
+    { name: "Php", level: 80 },
+    { name: "Javascript", level: 75 },
+    { name: "Firebase", level: 75 },
     { name: "Laravel", level: 80 },
     { name: "MySQL", level: 85 },
   ];
@@ -89,7 +93,7 @@ const About = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full p-1">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
                         <img
-                          src="/profile-image.jpg" // Replace with your image path
+                           src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
                           alt="Jhonel G. Mira"
                           className="w-full h-full object-cover rounded-full"
                           onError={(e) => {

@@ -55,6 +55,28 @@ const Projects = () => {
       githubUrl: '',
       icon: Globe,
     },
+    {
+      title: 'LoveTrip Mobile App',
+      description: 'A mobile application built with Flutter and Laravel that combines a collaborative Todo List and a travel documentation feature. Users can create and manage tasks, track their progress, and document trips with images and notes alongside partners, enabling seamless teamwork and shared memories.',
+      image: '/login.jpg', // relative path from public/
+      technologies: ['Flutter', 'Dart', 'Laravel', 'REST API'],
+      category: 'Mobile App',
+      liveUrl: 'https://raw.githubusercontent.com/Jhonel12/Flutter-Todo-App-and-LoveTrip/main/lovetrip-release.apk',
+      githubUrl: 'https://github.com/Jhonel12/Flutter-Todo-App-and-LoveTrip',
+      icon: Globe // or another icon you prefer
+    },
+    {
+      title: 'BeeStack Team Portfolio',
+      description: 'A portfolio website showcasing the BeeStack team, a group of passionate developers and designers creating innovative system solutions tailored to business needs. The site highlights the team’s skills, projects, and approach from concept to deployment, providing a comprehensive view of their expertise and collaboration.',
+      image: 'https://s.wordpress.com/mshots/v1/https://bee-stack.vercel.app/?w=800',
+      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
+      category: 'Team Portfolio',
+      liveUrl: 'https://bee-stack.vercel.app/',
+      githubUrl: '', // add repo if available
+      icon: Globe
+    }
+    
+    
   ]
 
   const categories = ['All', 'Web App']
@@ -136,24 +158,27 @@ const Projects = () => {
               >
                 {/* Project Image */}
                 <div className="relative mb-6 overflow-hidden rounded-lg">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      className="w-full h-48 object-cover transition-transform duration-300 group-hover:scale-105"
-                      onError={(e) => {
-                        if (!e.currentTarget.dataset.fallback) {
-                          e.currentTarget.dataset.fallback = 'true'
-                          e.currentTarget.src = '/api/placeholder/600/400'
-                        }
-                      }}
-                    />
-                  ) : (
-                    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
-                      <project.icon size={64} className="text-primary-600 dark:text-primary-400" />
-                    </div>
-                  )}
+  {project.image ? (
+    <img
+      src={project.image}
+      alt={project.title}
+      loading="lazy"
+      className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
+        project.title === 'LoveTrip Mobile App' ? 'object-contain bg-gray-100' : 'object-cover'
+      }`}
+      onError={(e) => {
+        if (!e.currentTarget.dataset.fallback) {
+          e.currentTarget.dataset.fallback = 'true'
+          e.currentTarget.src = '/api/placeholder/600/400'
+        }
+      }}
+    />
+  ) : (
+    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
+      <project.icon size={64} className="text-primary-600 dark:text-primary-400" />
+    </div>
+  )}
+
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
                     {project.liveUrl && (
                       <a

@@ -3,6 +3,7 @@ import { ArrowRight, Code, Database, Globe, Smartphone } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTheme } from "../hooks/useTheme";
 
+import { useState, useEffect } from "react";
 const Home = () => {
   const { isDark } = useTheme();
   const skills = [
@@ -14,12 +15,12 @@ const Home = () => {
     {
       icon: Database,
       title: "Backend Development",
-      description: "Node.js, Express, Python, Django",
+      description: "Laravel, MySQL, Firebase Firestore",
     },
     {
       icon: Globe,
       title: "Full Stack",
-      description: "MongoDB, PostgreSQL, AWS, Docker",
+      description: "React, Laravel, MySQL, AWS, Hostinger",
     },
     {
       icon: Smartphone,
@@ -27,7 +28,47 @@ const Home = () => {
       description: "React Native, Flutter",
     },
   ];
-
+  const text = "Hi, I'm Jhonel G. Mira";
+  const [displayed, setDisplayed] = useState("");
+  const [index, setIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [showEmoji, setShowEmoji] = useState(false);
+  
+  useEffect(() => {
+    const typingSpeed = isDeleting ? 50 : 100;
+    const pauseEnd = 2000; // Pause at end before deleting
+    const pauseStart = 500; // Pause at start before retyping
+  
+    if (!isDeleting && index < text.length) {
+      // Typing forward
+      const timeout = setTimeout(() => {
+        setDisplayed((prev) => prev + text[index]);
+        setIndex(index + 1);
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    } else if (!isDeleting && index === text.length) {
+      // Finished typing, show emoji and pause before deleting
+      setShowEmoji(true);
+      const timeout = setTimeout(() => {
+        setIsDeleting(true);
+        setShowEmoji(false);
+      }, pauseEnd);
+      return () => clearTimeout(timeout);
+    } else if (isDeleting && index > 0) {
+      // Deleting
+      const timeout = setTimeout(() => {
+        setDisplayed((prev) => prev.slice(0, -1));
+        setIndex(index - 1);
+      }, typingSpeed);
+      return () => clearTimeout(timeout);
+    } else if (isDeleting && index === 0) {
+      // Finished deleting, pause before retyping
+      const timeout = setTimeout(() => {
+        setIsDeleting(false);
+      }, pauseStart);
+      return () => clearTimeout(timeout);
+    }
+  }, [index, isDeleting, text]);
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -40,9 +81,14 @@ const Home = () => {
               transition={{ duration: 0.6 }}
               className="space-y-6"
             >
-              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
-                Hi, I'm <span className="gradient-text">Jhonel G. Mira</span>
-              </h1>
+<h1 className="text-4xl md:text-6xl font-bold leading-tight text-black dark:text-white">
+  {displayed}
+  {showEmoji && (
+    <span className="inline-block animate-wave">👋</span>
+  )}
+  <span className="animate-blink">|</span>
+</h1>
+
               <p className="text-xl text-gray-600 dark:text-gray-400">
                 Full Stack Developer passionate about creating innovative web
                 solutions and turning ideas into reality through clean,
@@ -73,46 +119,46 @@ const Home = () => {
             >
               {/* Profile Image */}
               <div className="relative mb-8 group">
-                <div className="w-64 h-64 mx-auto relative transition-transform duration-300 transform group-hover:scale-105">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full p-1 transition-all duration-300 group-hover:rotate-6">
-                    <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
-                      <img
-                        src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
-                        alt="Jhonel G. Mira"
-                        className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
-                        onError={(e) => {
-                          if (!e.currentTarget.dataset.fallback) {
-                            e.currentTarget.dataset.fallback = "true";
-                            e.currentTarget.src = "/profile-image.jpg";
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
+  <div className="w-64 h-64 mx-auto relative transition-transform duration-300 transform group-hover:scale-105">
+    <div className="absolute inset-0 bg-gray-700 dark:bg-gray-700 rounded-full p-1 transition-all duration-300 group-hover:rotate-6">
+      <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
+        <img
+          src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
+          alt="Jhonel G. Mira"
+          className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
+          onError={(e) => {
+            if (!e.currentTarget.dataset.fallback) {
+              e.currentTarget.dataset.fallback = "true";
+              e.currentTarget.src = "/profile-image.jpg";
+            }
+          }}
+        />
+      </div>
+    </div>
+  </div>
+</div>
 
-              <div className="bg-gradient-to-br from-primary-500 to-purple-600 rounded-2xl p-8 text-white">
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-bold">
-                    Let's Build Something Amazing
-                  </h3>
-                  <p className="text-primary-100">
-                    I specialize in creating modern, scalable web applications
-                    that deliver exceptional user experiences.
-                  </p>
-                  {/* <div className="flex items-center space-x-4">
-                    <div className="flex -space-x-2">
-                      <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white"></div>
-                      <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white"></div>
-                      <div className="w-8 h-8 bg-white/20 rounded-full border-2 border-white"></div>
-                    </div>
-                    <span className="text-sm">
-                      Trusted by developers worldwide
-                    </span>
-                  </div> */}
-                </div>
-              </div>
+              <div className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-8 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700">
+  <div className="space-y-4">
+    <h3 className="text-2xl font-bold">
+      Let's Build Something Amazing
+    </h3>
+    <p className="text-gray-600 dark:text-gray-300">
+      I specialize in creating modern, scalable web applications
+      that deliver exceptional user experiences.
+    </p>
+    {/* <div className="flex items-center space-x-4">
+      <div className="flex -space-x-2">
+        <div className="w-8 h-8 bg-gray-200 dark:bg-white/20 rounded-full border-2 border-gray-900 dark:border-white"></div>
+        <div className="w-8 h-8 bg-gray-200 dark:bg-white/20 rounded-full border-2 border-gray-900 dark:border-white"></div>
+        <div className="w-8 h-8 bg-gray-200 dark:bg-white/20 rounded-full border-2 border-gray-900 dark:border-white"></div>
+      </div>
+      <span className="text-sm">
+        Trusted by developers worldwide
+      </span>
+    </div> */}
+  </div>
+</div>
             </motion.div>
           </div>
         </div>

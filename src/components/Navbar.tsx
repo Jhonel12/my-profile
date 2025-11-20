@@ -7,6 +7,9 @@ import { useTheme } from '../hooks/useTheme'; // adjust path
 interface NavItem { name: string; path: string; }
 
 const Navbar: React.FC = () => {
+  const [isFalling, setIsFalling] = useState(false);
+  const [isReturning, setIsReturning] = useState(false);
+
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
   const { isDark, toggleTheme } = useTheme();
@@ -18,28 +21,52 @@ const Navbar: React.FC = () => {
     { name: 'Contact', path: '/contact' },
   ];
 
+  const handleNameClick = () => {
+    setIsFalling(true);
+    setTimeout(() => {
+      setIsFalling(false);
+      setIsReturning(true);
+    }, 1000); // Fall duration
+    setTimeout(() => {
+      setIsReturning(false);
+    }, 2000); // Fall + return duration
+  };
   return (
     <nav className="fixed top-0 w-full bg-white/80 dark:bg-dark-900/80 backdrop-blur-md z-50 border-b border-gray-200 dark:border-dark-700">
       <div className="container-custom">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-600 dark:border-primary-400">
-              <img
-                src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
-                alt="Jhonel G. Mira"
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  const target = e.currentTarget as HTMLImageElement;
-                  if (!target.dataset.fallback) {
-                    target.dataset.fallback = "true";
-                    target.src = "/profile-image.jpg";
-                  }
-                }}
-              />
-            </div>
-            <span className="text-2xl font-bold gradient-text">Jhonel G. Mira</span>
-          </Link>
+  <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-600 dark:border-primary-400">
+    <img
+      src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
+      alt="Jhonel G. Mira"
+      className="w-full h-full object-cover"
+      onError={(e) => {
+        const target = e.currentTarget as HTMLImageElement;
+        if (!target.dataset.fallback) {
+          target.dataset.fallback = "true";
+          target.src = "/profile-image.jpg";
+        }
+      }}
+    />
+  </div>
+  <span 
+  className={`text-2xl font-bold text-gray-900 dark:text-white cursor-pointer transition-all ${
+    isFalling ? 'animate-fall' : ''
+  } ${
+    isReturning ? 'animate-return' : ''
+  }`}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleNameClick();
+  }}
+  style={{ display: 'inline-block' }}
+>
+  Jhonel G. Mira
+</span>
+</Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
