@@ -1,90 +1,97 @@
-import { motion } from 'framer-motion'
-import { ExternalLink, Github, Globe, Code } from 'lucide-react'
-import { useState } from 'react'
+import { motion } from "framer-motion";
+import { ExternalLink, Github, Globe, Code } from "lucide-react";
+import { useState } from "react";
 
 const Projects = () => {
-  const [selectedCategory, setSelectedCategory] = useState('All')
+  const [selectedCategory, setSelectedCategory] = useState("All");
   const projects = [
     {
-      title: 'Portfolio Website',
-      description: 'A modern, responsive portfolio website showcasing skills and projects with smooth animations and dark mode support.',
-      image: 'https://s.wordpress.com/mshots/v1/https://my-profile-jhonel.vercel.app/?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vite'],
-      category: 'Web App',
-      liveUrl: 'https://my-profile-jhonel.vercel.app/',
-      githubUrl: 'https://github.com/jhonelmira/portfolio',
+      title: "Portfolio Website",
+      description:
+        "A modern, responsive portfolio website showcasing skills and projects with smooth animations and dark mode support.",
+      image:
+        "https://s.wordpress.com/mshots/v1/https://my-profile-jhonel.vercel.app/?w=800",
+      technologies: [
+        "React",
+        "TypeScript",
+        "Tailwind CSS",
+        "Framer Motion",
+        "Vite",
+      ],
+      category: "Web App",
+      liveUrl: "https://my-profile-jhonel.vercel.app/",
+      githubUrl: "https://github.com/jhonelmira/portfolio",
       icon: Globe,
     },
     {
-      title: 'Skin Avenue Aesthetic',
-      description: 'A professional website for Skin Avenue Aesthetic medical spa, featuring services like Botox, lip fillers, and CO2 laser resurfacing treatments.',
-      image: 'https://s.wordpress.com/mshots/v1/https://skinavenueaesthetic.com/?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-      category: 'Web App',
-      liveUrl: 'https://skinavenueaesthetic.com/',
-      githubUrl: 'https://github.com/jhonelmira/skin-avenue-aesthetic',
+      title: "Pharma System",
+      description:
+        "Pharma is a Point-of-Sale and Inventory Management System specifically built for a pharmacy. It includes features tailored for pharmacy needs such as batch tracking, expiry date monitoring, dosage management, and supplier management. It is a single deployment system built for one pharmacy client and runs on the same Oracle Cloud server. Built with Laravel and React, it served as the early foundation and inspiration for both BentaHub V1 and BentaHub V2.",
+      image:
+        "https://s.wordpress.com/mshots/v1/https://pharma-system-tau.vercel.app/auth/sign-in?w=800",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Framer Motion"],
+      category: "Web App",
+      liveUrl: "https://pharma-system-tau.vercel.app/auth/sign-in",
+      githubUrl: "",
       icon: Globe,
     },
     {
-      title: 'Mainte-Go',
-      description: 'A comprehensive web platform designed to streamline maintenance services and improve operational efficiency for service providers.',
-      image: 'https://s.wordpress.com/mshots/v1/http://mainte-go.com/?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Node.js'],
-      category: 'Web App',
-      liveUrl: 'http://mainte-go.com/',
-      githubUrl: 'https://github.com/jhonelmira/mainte-go',
+      title: "Benta Hub System",
+      description:
+        "BentaHub is the first version of the system, a Point-of-Sale and Inventory Management System built for a single client deployment. It allows the store to manage their products, track inventory, monitor sales, and generate reports. It includes features like batch tracking, expiry date monitoring, dosage management, and supplier management. Built with Laravel and React, it is currently in its testing phase with a real client and served as the foundation and inspiration for building BentaHub V2.",
+      image:
+        "https://s.wordpress.com/mshots/v1/https://benta-hub-system.vercel.app/?w=800",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Vercel"],
+      category: "Web App",
+      liveUrl: "https://benta-hub-system.vercel.app/",
+      githubUrl: "",
+      icon: Globe,
+    },
+    {
+      title: "Benta Hub V2",
+      description:
+        "BentaHub V2 is a cloud-based Point-of-Sale and Inventory Management System designed for sari-sari stores and small businesses in the Philippines. It allows store owners to manage their products, track their inventory, monitor daily sales, generate reports, and manage their staff all in one system. It supports multiple stores and branches, role-based access for owners, managers, and cashiers, and accepts GCash payments via PayMongo. Built with Laravel and React, it is currently in its testing phase and is deployed on Oracle Cloud.",
+      image:
+        "https://s.wordpress.com/mshots/v1/https://benta-hub-v2.goalhub.site/?w=800",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Node.js"],
+      category: "Web App",
+      liveUrl: "https://benta-hub-v2.goalhub.site/",
+      githubUrl: "",
       icon: Code,
     },
     {
-      title: 'DMW Survey Platform',
-      description: 'An online survey tool enabling distributed teams to capture feedback and track responses through a modern, responsive interface.',
-      image: 'https://s.wordpress.com/mshots/v1/https://dmw-survey.vercel.app/?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion'],
-      category: 'Web App',
-      liveUrl: 'https://dmw-survey.vercel.app/',
-      githubUrl: '',
+      title: "LoveTrip Mobile App",
+      description:
+        "A mobile application built with Flutter and Laravel that combines a collaborative Todo List and a travel documentation feature. Users can create and manage tasks, track their progress, and document trips with images and notes alongside partners, enabling seamless teamwork and shared memories.",
+      image: "/login.jpg", // relative path from public/
+      technologies: ["Flutter", "Dart", "Laravel", "REST API"],
+      category: "Mobile App",
+      liveUrl:
+        "https://raw.githubusercontent.com/Jhonel12/Flutter-Todo-App-and-LoveTrip/main/lovetrip-release.apk",
+      githubUrl: "https://github.com/Jhonel12/Flutter-Todo-App-and-LoveTrip",
+      icon: Globe, // or another icon you prefer
+    },
+    {
+      title: "BeeStack Team Portfolio",
+      description:
+        "A portfolio website showcasing the BeeStack team, a group of passionate developers and designers creating innovative system solutions tailored to business needs. The site highlights the team’s skills, projects, and approach from concept to deployment, providing a comprehensive view of their expertise and collaboration.",
+      image:
+        "https://s.wordpress.com/mshots/v1/https://bee-stack.vercel.app/?w=800",
+      technologies: ["React", "TypeScript", "Tailwind CSS", "Vite"],
+      category: "Team Portfolio",
+      liveUrl: "https://bee-stack.vercel.app/",
+      githubUrl: "", // add repo if available
       icon: Globe,
     },
-    {
-      title: 'DMW CIMS Portal',
-      description: 'A credentialed web portal that streamlines access to internal management features with a clean login experience.',
-      image: 'https://s.wordpress.com/mshots/v1/https://dmw-cims.vercel.app/login?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS'],
-      category: 'Web App',
-      liveUrl: 'https://dmw-cims.vercel.app/login',
-      githubUrl: '',
-      icon: Globe,
-    },
-    {
-      title: 'LoveTrip Mobile App',
-      description: 'A mobile application built with Flutter and Laravel that combines a collaborative Todo List and a travel documentation feature. Users can create and manage tasks, track their progress, and document trips with images and notes alongside partners, enabling seamless teamwork and shared memories.',
-      image: '/login.jpg', // relative path from public/
-      technologies: ['Flutter', 'Dart', 'Laravel', 'REST API'],
-      category: 'Mobile App',
-      liveUrl: 'https://raw.githubusercontent.com/Jhonel12/Flutter-Todo-App-and-LoveTrip/main/lovetrip-release.apk',
-      githubUrl: 'https://github.com/Jhonel12/Flutter-Todo-App-and-LoveTrip',
-      icon: Globe // or another icon you prefer
-    },
-    {
-      title: 'BeeStack Team Portfolio',
-      description: 'A portfolio website showcasing the BeeStack team, a group of passionate developers and designers creating innovative system solutions tailored to business needs. The site highlights the team’s skills, projects, and approach from concept to deployment, providing a comprehensive view of their expertise and collaboration.',
-      image: 'https://s.wordpress.com/mshots/v1/https://bee-stack.vercel.app/?w=800',
-      technologies: ['React', 'TypeScript', 'Tailwind CSS', 'Vite'],
-      category: 'Team Portfolio',
-      liveUrl: 'https://bee-stack.vercel.app/',
-      githubUrl: '', // add repo if available
-      icon: Globe
-    }
-    
-    
-  ]
+  ];
 
-  const categories = ['All', 'Web App']
+  const categories = ["All", "Web App", "Mobile App"];
 
   // Filter projects based on selected category
-  const filteredProjects = selectedCategory === 'All' 
-    ? projects 
-    : projects.filter(project => project.category === selectedCategory)
+  const filteredProjects =
+    selectedCategory === "All"
+      ? projects
+      : projects.filter((project) => project.category === selectedCategory);
 
   return (
     <div className="pt-16">
@@ -101,8 +108,9 @@ const Projects = () => {
               My <span className="gradient-text">Projects</span>
             </h1>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Here's a collection of web applications I've built, showcasing my skills 
-              in modern web development, user interface design, and full-stack solutions.
+              Here's a collection of web applications I've built, showcasing my
+              skills in modern web development, user interface design, and
+              full-stack solutions.
             </p>
           </motion.div>
 
@@ -119,8 +127,8 @@ const Projects = () => {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
                   selectedCategory === category
-                    ? 'bg-primary-600 text-white shadow-lg'
-                    : 'bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400'
+                    ? "bg-primary-600 text-white shadow-lg"
+                    : "bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 hover:bg-primary-100 dark:hover:bg-primary-900/20 hover:text-primary-600 dark:hover:text-primary-400"
                 }`}
               >
                 {category}
@@ -140,7 +148,7 @@ const Projects = () => {
                 No projects found in the "{selectedCategory}" category.
               </div>
               <button
-                onClick={() => setSelectedCategory('All')}
+                onClick={() => setSelectedCategory("All")}
                 className="mt-4 text-primary-600 dark:text-primary-400 hover:underline"
               >
                 View all projects
@@ -149,116 +157,121 @@ const Projects = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project, index) => (
-              <motion.div
-                key={project.title}
-                initial={{ opacity: 0, y: 50 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="card group hover:scale-105 transition-transform duration-300"
-              >
-                {/* Project Image */}
-                <div className="relative mb-6 overflow-hidden rounded-lg">
-  {project.image ? (
-    <img
-      src={project.image}
-      alt={project.title}
-      loading="lazy"
-      className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
-        project.title === 'LoveTrip Mobile App' ? 'object-contain bg-gray-100' : 'object-cover'
-      }`}
-      onError={(e) => {
-        if (!e.currentTarget.dataset.fallback) {
-          e.currentTarget.dataset.fallback = 'true'
-          e.currentTarget.src = '/api/placeholder/600/400'
-        }
-      }}
-    />
-  ) : (
-    <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
-      <project.icon size={64} className="text-primary-600 dark:text-primary-400" />
-    </div>
-  )}
-
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white rounded-full hover:bg-primary-100 transition-colors duration-200"
-                      >
-                        <ExternalLink size={20} className="text-gray-900" />
-                      </a>
+                <motion.div
+                  key={project.title}
+                  initial={{ opacity: 0, y: 50 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="card group hover:scale-105 transition-transform duration-300"
+                >
+                  {/* Project Image */}
+                  <div className="relative mb-6 overflow-hidden rounded-lg">
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        loading="lazy"
+                        className={`w-full h-48 transition-transform duration-300 group-hover:scale-105 ${
+                          project.title === "LoveTrip Mobile App"
+                            ? "object-contain bg-gray-100"
+                            : "object-cover"
+                        }`}
+                        onError={(e) => {
+                          if (!e.currentTarget.dataset.fallback) {
+                            e.currentTarget.dataset.fallback = "true";
+                            e.currentTarget.src = "/api/placeholder/600/400";
+                          }
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-48 bg-gradient-to-br from-primary-100 to-purple-100 dark:from-primary-900/20 dark:to-purple-900/20 flex items-center justify-center">
+                        <project.icon
+                          size={64}
+                          className="text-primary-600 dark:text-primary-400"
+                        />
+                      </div>
                     )}
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="p-2 bg-white rounded-full hover:bg-primary-100 transition-colors duration-200"
-                      >
-                        <Github size={20} className="text-gray-900" />
-                      </a>
-                    )}
-                  </div>
-                </div>
 
-                {/* Project Info */}
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-sm font-medium rounded-full">
-                      {project.category}
-                    </span>
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center space-x-4">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 bg-white rounded-full hover:bg-primary-100 transition-colors duration-200"
+                        >
+                          <ExternalLink size={20} className="text-gray-900" />
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="p-2 bg-white rounded-full hover:bg-primary-100 transition-colors duration-200"
+                        >
+                          <Github size={20} className="text-gray-900" />
+                        </a>
+                      )}
+                    </div>
                   </div>
-                  
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
-                    {project.title}
-                  </h3>
-                  
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {project.description}
-                  </p>
 
-                  {/* Technologies */}
-                  <div className="flex flex-wrap gap-2">
-                    {project.technologies.map((tech) => (
-                      <span
-                        key={tech}
-                        className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 text-xs rounded"
-                      >
-                        {tech}
+                  {/* Project Info */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900/20 text-primary-600 dark:text-primary-400 text-sm font-medium rounded-full">
+                        {project.category}
                       </span>
-                    ))}
-                  </div>
+                    </div>
 
-                  {/* Links */}
-                  <div className="flex space-x-4 pt-4">
-                    {project.liveUrl && (
-                      <a
-                        href={project.liveUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
-                      >
-                        <ExternalLink size={16} className="mr-1" />
-                        Live Demo
-                      </a>
-                    )}
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
-                      >
-                        <Github size={16} className="mr-1" />
-                        Source Code
-                      </a>
-                    )}
+                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-200">
+                      {project.title}
+                    </h3>
+
+                    <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+                      {project.description}
+                    </p>
+
+                    {/* Technologies */}
+                    <div className="flex flex-wrap gap-2">
+                      {project.technologies.map((tech) => (
+                        <span
+                          key={tech}
+                          className="px-2 py-1 bg-gray-100 dark:bg-dark-700 text-gray-700 dark:text-gray-300 text-xs rounded"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Links */}
+                    <div className="flex space-x-4 pt-4">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 transition-colors duration-200"
+                        >
+                          <ExternalLink size={16} className="mr-1" />
+                          Live Demo
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors duration-200"
+                        >
+                          <Github size={16} className="mr-1" />
+                          Source Code
+                        </a>
+                      )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            ))}
+                </motion.div>
+              ))}
             </div>
           )}
         </div>
@@ -278,8 +291,9 @@ const Projects = () => {
               Have a Project in Mind?
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
-              I'm always interested in new opportunities and exciting projects. 
-              Let's discuss how we can work together to bring your ideas to life.
+              I'm always interested in new opportunities and exciting projects.
+              Let's discuss how we can work together to bring your ideas to
+              life.
             </p>
             <a
               href="/contact"
@@ -292,7 +306,7 @@ const Projects = () => {
         </div>
       </section>
     </div>
-  )
-}
+  );
+};
 
-export default Projects
+export default Projects;

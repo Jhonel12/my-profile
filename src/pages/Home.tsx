@@ -1,9 +1,47 @@
-import { motion } from "framer-motion";
-import { ArrowRight, Code, Database, Globe, Smartphone } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import {
+  ArrowRight,
+  CheckCircle2,
+  Code,
+  Database,
+  Globe,
+  MessageSquare,
+  Smartphone,
+  ThumbsDown,
+  ThumbsUp,
+} from "lucide-react";
 import { Link } from "react-router-dom";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  orderBy,
+  query,
+  runTransaction,
+  serverTimestamp,
+} from "firebase/firestore";
+import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { useTheme } from "../hooks/useTheme";
+import { auth, db } from "../services/firebase";
 
 import { useState, useEffect } from "react";
+
+type ReactionType = "like" | "dislike";
+type FeedbackComment = {
+  id: string;
+  message: string;
+  authorLabel?: string;
+  userId?: string;
+  createdAt?: {
+    seconds?: number;
+  };
+};
+
+const reactionsRef = doc(db, "pageReactions", "home");
+const commentsRef = collection(db, "pageReactions", "home", "comments");
+
 const Home = () => {
   const { isDark } = useTheme();
   const skills = [
@@ -33,7 +71,41 @@ const Home = () => {
   const [index, setIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showEmoji, setShowEmoji] = useState(false);
-  
+  const [likes, setLikes] = useState(0);
+  const [dislikes, setDislikes] = useState(0);
+  const [selectedReaction, setSelectedReaction] = useState<ReactionType | null>(
+    null
+  );
+  const [isReactionLoading, setIsReactionLoading] = useState(true);
+  const [isSubmittingReaction, setIsSubmittingReaction] = useState(false);
+  const [reactionError, setReactionError] = useState("");
+  const [reactionUserId, setReactionUserId] = useState<string | null>(null);
+  const [activeReactionAnimation, setActiveReactionAnimation] =
+    useState<ReactionType | null>(null);
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState<FeedbackComment[]>([]);
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
+  const [commentError, setCommentError] = useState("");
+  const [commentSuccess, setCommentSuccess] = useState("");
+
+  const getReactionErrorMessage = (error: unknown) => {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error
+    ) {
+      if (error.code === "auth/admin-restricted-operation") {
+        return "Enable Anonymous sign-in in Firebase Authentication to use voting.";
+      }
+
+      if (error.code === "auth/configuration-not-found") {
+        return "Firebase Anonymous Auth is not enabled. Turn it on in Firebase Console > Authentication > Sign-in method > Anonymous.";
+      }
+    }
+
+    return "Unable to load reactions right now.";
+  };
+
   useEffect(() => {
     const typingSpeed = isDeleting ? 50 : 100;
     const pauseEnd = 2000; // Pause at end before deleting
@@ -69,6 +141,206 @@ const Home = () => {
       return () => clearTimeout(timeout);
     }
   }, [index, isDeleting, text]);
+
+  useEffect(() => {
+    let unsubscribeReactions: (() => void) | undefined;
+    let unsubscribeComments: (() => void) | undefined;
+
+    const loadReactions = async (uid: string) => {
+      try {
+        unsubscribeReactions = onSnapshot(reactionsRef, (snapshot) => {
+          if (!snapshot.exists()) {
+            setLikes(0);
+            setDislikes(0);
+            return;
+          }
+
+          const data = snapshot.data();
+          setLikes(typeof data.likes === "number" ? data.likes : 0);
+          setDislikes(typeof data.dislikes === "number" ? data.dislikes : 0);
+        });
+
+        unsubscribeComments = onSnapshot(
+          query(commentsRef, orderBy("createdAt", "desc")),
+          (snapshot) => {
+            setComments(
+              snapshot.docs.map((commentDoc) => ({
+                id: commentDoc.id,
+                ...(commentDoc.data() as Omit<FeedbackComment, "id">),
+              }))
+            );
+          }
+        );
+
+        const voteSnapshot = await getDoc(
+          doc(db, "pageReactions", "home", "votes", uid)
+        );
+
+        if (voteSnapshot.exists()) {
+          const voteData = voteSnapshot.data();
+          if (voteData.reaction === "like" || voteData.reaction === "dislike") {
+            setSelectedReaction(voteData.reaction);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading reactions:", error);
+        setReactionError(getReactionErrorMessage(error));
+      } finally {
+        setIsReactionLoading(false);
+      }
+    };
+
+    const initializeReactionVoting = async (user: typeof auth.currentUser) => {
+      try {
+        const currentUser = user ?? (await signInAnonymously(auth)).user;
+        setReactionUserId(currentUser.uid);
+        await loadReactions(currentUser.uid);
+      } catch (error) {
+        console.error("Error initializing anonymous auth:", error);
+        setReactionError(getReactionErrorMessage(error));
+        setIsReactionLoading(false);
+      }
+    };
+
+    const unsubscribeAuth = onAuthStateChanged(auth, async (user) => {
+      await initializeReactionVoting(user);
+    });
+
+    return () => {
+      unsubscribeAuth();
+      unsubscribeReactions?.();
+      unsubscribeComments?.();
+    };
+  }, []);
+
+  const handleReaction = async (type: ReactionType) => {
+    if (selectedReaction || isSubmittingReaction || !reactionUserId) {
+      return;
+    }
+
+    setIsSubmittingReaction(true);
+    setReactionError("");
+
+    try {
+      const updatedCounts = await runTransaction<
+        { likes: number; dislikes: number; reaction: ReactionType }
+      >(db, async (transaction) => {
+        const voteRef = doc(db, "pageReactions", "home", "votes", reactionUserId);
+        const [reactionsSnapshot, voteSnapshot] = await Promise.all([
+          transaction.get(reactionsRef),
+          transaction.get(voteRef),
+        ]);
+
+        if (voteSnapshot.exists()) {
+          const data = reactionsSnapshot.data();
+          return {
+            likes: typeof data?.likes === "number" ? data.likes : 0,
+            dislikes: typeof data?.dislikes === "number" ? data.dislikes : 0,
+            reaction:
+              voteSnapshot.data().reaction === "dislike" ? "dislike" : "like",
+          };
+        }
+
+        const currentLikes =
+          reactionsSnapshot.exists() &&
+          typeof reactionsSnapshot.data().likes === "number"
+            ? reactionsSnapshot.data().likes
+            : 0;
+        const currentDislikes =
+          reactionsSnapshot.exists() &&
+          typeof reactionsSnapshot.data().dislikes === "number"
+            ? reactionsSnapshot.data().dislikes
+            : 0;
+
+        const nextCounts: {
+          likes: number;
+          dislikes: number;
+          reaction: ReactionType;
+        } = {
+          likes: type === "like" ? currentLikes + 1 : currentLikes,
+          dislikes: type === "dislike" ? currentDislikes + 1 : currentDislikes,
+          reaction: type,
+        };
+
+        transaction.set(
+          reactionsRef,
+          {
+            ...nextCounts,
+            updatedAt: serverTimestamp(),
+          },
+          { merge: true }
+        );
+        transaction.set(voteRef, {
+          reaction: type,
+          createdAt: serverTimestamp(),
+        });
+
+        return nextCounts;
+      });
+
+      setLikes(updatedCounts.likes);
+      setDislikes(updatedCounts.dislikes);
+      setSelectedReaction(updatedCounts.reaction);
+      setActiveReactionAnimation(type);
+      window.setTimeout(() => setActiveReactionAnimation(null), 900);
+    } catch (error) {
+      console.error("Error saving reaction:", error);
+      setReactionError(getReactionErrorMessage(error));
+    } finally {
+      setIsSubmittingReaction(false);
+    }
+  };
+
+  const handleCommentSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
+    if (!reactionUserId || !comment.trim()) {
+      return;
+    }
+
+    setIsSubmittingComment(true);
+    setCommentError("");
+    setCommentSuccess("");
+
+    try {
+      await addDoc(commentsRef, {
+        message: comment.trim(),
+        userId: reactionUserId,
+        createdAt: serverTimestamp(),
+      });
+
+      setComment("");
+      setCommentSuccess("Comment submitted.");
+      window.setTimeout(() => setCommentSuccess(""), 1400);
+    } catch (error) {
+      console.error("Error saving comment:", error);
+      setCommentError("Unable to save your comment right now.");
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
+  const formatCommentTimestamp = (seconds?: number) => {
+    if (!seconds) {
+      return "Just now";
+    }
+
+    return new Date(seconds * 1000).toLocaleString();
+  };
+
+  const visitorLabelMap = comments.reduce<Record<string, string>>((acc, entry) => {
+    if (!entry.userId) {
+      return acc;
+    }
+
+    if (!acc[entry.userId]) {
+      const visitorNumber = Object.keys(acc).length + 1;
+      acc[entry.userId] = `Visitor ${String(visitorNumber).padStart(2, "0")}`;
+    }
+
+    return acc;
+  }, {});
+
   return (
     <div className="pt-16">
       {/* Hero Section */}
@@ -236,6 +508,315 @@ const Home = () => {
           </motion.div>
         </div>
       </section>
+
+      <section className="section-padding bg-gray-50 dark:bg-dark-800">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mx-auto max-w-7xl rounded-2xl border border-gray-200 bg-white p-6 text-gray-900 shadow-xl shadow-gray-200/70 dark:border-gray-700 dark:bg-gray-900 dark:shadow-black/30 dark:text-white"
+          >
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+              <div className="max-w-2xl">
+                <h2 className="text-2xl font-bold">Quick Feedback</h2>
+                <p className="mt-2 text-gray-600 dark:text-gray-400">
+                  Vote once using an anonymous Firebase account. Each visitor
+                  gets a unique UID without needing a manual sign-in.
+                </p>
+                <p className="mt-2 text-sm text-gray-500 dark:text-gray-400">
+                  {selectedReaction
+                    ? "Your anonymous vote has already been recorded."
+                    : "Leave a like or dislike for this portfolio."}
+                </p>
+              </div>
+              <div className="flex gap-3 lg:pt-1">
+                <motion.button
+                  type="button"
+                  onClick={() => void handleReaction("like")}
+                  disabled={
+                    Boolean(selectedReaction) ||
+                    isSubmittingReaction ||
+                    isReactionLoading ||
+                    !reactionUserId
+                  }
+                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 ${
+                    selectedReaction === "like"
+                      ? "border-green-500 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                      : "border-gray-200 bg-white hover:border-green-300 hover:text-green-600 dark:border-gray-700 dark:bg-dark-800 dark:hover:border-green-700 dark:hover:text-green-400"
+                  }`}
+                  whileTap={{ scale: 0.94 }}
+                  animate={
+                    activeReactionAnimation === "like"
+                      ? {
+                          scale: [1, 1.14, 1],
+                          boxShadow: [
+                            "0 0 0 rgba(34,197,94,0)",
+                            "0 0 0 10px rgba(34,197,94,0.18)",
+                            "0 0 0 rgba(34,197,94,0)",
+                          ],
+                        }
+                      : undefined
+                  }
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                >
+                  <ThumbsUp size={16} />
+                  <span className="relative inline-flex items-center">
+                    Like {isReactionLoading ? "..." : likes}
+                    <AnimatePresence>
+                      {activeReactionAnimation === "like" && (
+                        <motion.span
+                          initial={{ opacity: 0, y: 8, scale: 0.8 }}
+                          animate={{ opacity: 1, y: -16, scale: 1 }}
+                          exit={{ opacity: 0, y: -28, scale: 0.8 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          className="pointer-events-none absolute -right-4 -top-3 text-xs font-bold text-green-500"
+                        >
+                          +1
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </span>
+                </motion.button>
+                <motion.button
+                  type="button"
+                  onClick={() => void handleReaction("dislike")}
+                  disabled={
+                    Boolean(selectedReaction) ||
+                    isSubmittingReaction ||
+                    isReactionLoading ||
+                    !reactionUserId
+                  }
+                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm font-medium transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60 ${
+                    selectedReaction === "dislike"
+                      ? "border-red-500 bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
+                      : "border-gray-200 bg-white hover:border-red-300 hover:text-red-600 dark:border-gray-700 dark:bg-dark-800 dark:hover:border-red-700 dark:hover:text-red-400"
+                  }`}
+                  whileTap={{ scale: 0.94 }}
+                  animate={
+                    activeReactionAnimation === "dislike"
+                      ? {
+                          scale: [1, 1.14, 1],
+                          boxShadow: [
+                            "0 0 0 rgba(239,68,68,0)",
+                            "0 0 0 10px rgba(239,68,68,0.18)",
+                            "0 0 0 rgba(239,68,68,0)",
+                          ],
+                        }
+                      : undefined
+                  }
+                  transition={{ duration: 0.45, ease: "easeOut" }}
+                >
+                  <ThumbsDown size={16} />
+                  <span className="relative inline-flex items-center">
+                    Dislike {isReactionLoading ? "..." : dislikes}
+                    <AnimatePresence>
+                      {activeReactionAnimation === "dislike" && (
+                        <motion.span
+                          initial={{ opacity: 0, y: 8, scale: 0.8 }}
+                          animate={{ opacity: 1, y: -16, scale: 1 }}
+                          exit={{ opacity: 0, y: -28, scale: 0.8 }}
+                          transition={{ duration: 0.6, ease: "easeOut" }}
+                          className="pointer-events-none absolute -right-4 -top-3 text-xs font-bold text-red-500"
+                        >
+                          +1
+                        </motion.span>
+                      )}
+                    </AnimatePresence>
+                  </span>
+                </motion.button>
+              </div>
+            </div>
+            {reactionError && (
+              <p className="mt-4 text-sm text-red-600 dark:text-red-400">
+                {reactionError}
+              </p>
+            )}
+            <div className="mt-6 grid gap-4 lg:grid-cols-[1.15fr_0.85fr]">
+              <form
+                onSubmit={handleCommentSubmit}
+                className="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-dark-800"
+              >
+                <div className="mb-3 flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-primary-100 text-primary-600 dark:bg-primary-900/20 dark:text-primary-300">
+                    <MessageSquare size={18} />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                      Leave a comment
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Share a quick note about the portfolio.
+                    </p>
+                  </div>
+                </div>
+
+                <textarea
+                  value={comment}
+                  onChange={(event) => setComment(event.target.value)}
+                  rows={3}
+                  maxLength={280}
+                  placeholder="Write your feedback here..."
+                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-primary-500 focus:outline-none focus:ring-2 focus:ring-primary-500/20 dark:border-gray-700 dark:bg-dark-900 dark:text-white"
+                />
+
+                <div className="mt-3 flex items-center justify-between gap-4">
+                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    {comment.length}/280 characters
+                  </p>
+                  <button
+                    type="submit"
+                    disabled={
+                      !reactionUserId ||
+                      isReactionLoading ||
+                      isSubmittingComment ||
+                      !comment.trim()
+                    }
+                    className="inline-flex items-center justify-center rounded-xl bg-primary-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-200 hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isSubmittingComment ? "Posting..." : "Post Comment"}
+                  </button>
+                </div>
+
+                {commentError && (
+                  <p className="mt-3 text-sm text-red-600 dark:text-red-400">
+                    {commentError}
+                  </p>
+                )}
+              </form>
+
+              <div className="rounded-2xl border border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-dark-800">
+                <div className="mb-3 flex items-center justify-between">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 dark:text-white">
+                      Recent comments
+                    </h3>
+                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                      Latest visitor feedback
+                    </p>
+                  </div>
+                  <span className="rounded-full bg-white px-3 py-1 text-xs font-medium text-gray-600 dark:bg-dark-900 dark:text-gray-300">
+                    {comments.length}
+                  </span>
+                </div>
+
+                <div className="max-h-60 space-y-3 overflow-y-auto pr-1">
+                  {isReactionLoading ? (
+                    Array.from({ length: 3 }).map((_, index) => (
+                      <div
+                        key={`comment-skeleton-${index}`}
+                        className="rounded-xl bg-white px-4 py-3 shadow-sm dark:bg-dark-900"
+                      >
+                        <div className="mb-3 flex items-center justify-between gap-3">
+                          <div className="h-4 w-24 animate-pulse rounded bg-gray-200 dark:bg-dark-700" />
+                          <div className="h-3 w-20 animate-pulse rounded bg-gray-200 dark:bg-dark-700" />
+                        </div>
+                        <div className="space-y-2">
+                          <div className="h-3 w-full animate-pulse rounded bg-gray-200 dark:bg-dark-700" />
+                          <div className="h-3 w-5/6 animate-pulse rounded bg-gray-200 dark:bg-dark-700" />
+                          <div className="h-3 w-2/3 animate-pulse rounded bg-gray-200 dark:bg-dark-700" />
+                        </div>
+                      </div>
+                    ))
+                  ) : comments.length === 0 ? (
+                    <p className="rounded-xl bg-white px-4 py-5 text-sm text-gray-500 dark:bg-dark-900 dark:text-gray-400">
+                      No comments yet. Be the first to leave feedback.
+                    </p>
+                  ) : (
+                    comments.slice(0, 5).map((entry) => (
+                      <div
+                        key={entry.id}
+                        className="rounded-xl bg-white px-4 py-3 shadow-sm dark:bg-dark-900"
+                      >
+                        <div className="mb-1 flex items-center justify-between gap-3">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                            {entry.userId
+                              ? visitorLabelMap[entry.userId]
+                              : entry.authorLabel || "Visitor"}
+                          </p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">
+                            {formatCommentTimestamp(entry.createdAt?.seconds)}
+                          </p>
+                        </div>
+                        <p className="text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+                          {entry.message}
+                        </p>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+      <AnimatePresence>
+        {commentSuccess && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.16 }}
+            className="fixed inset-0 z-[70] flex items-center justify-center bg-black/35 px-4 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 18, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.92 }}
+              transition={{ duration: 0.22, ease: "easeOut" }}
+              className="relative w-full max-w-sm overflow-hidden rounded-[1.75rem] border border-green-200 bg-white shadow-2xl dark:border-green-900/40 dark:bg-dark-900"
+            >
+              <div className="pointer-events-none absolute inset-0 overflow-hidden">
+                {[
+                  "left-8 top-10",
+                  "left-16 top-6",
+                  "right-10 top-8",
+                  "right-16 top-14",
+                  "left-14 bottom-12",
+                  "right-14 bottom-10",
+                ].map((position, index) => (
+                  <motion.span
+                    key={position}
+                    initial={{ opacity: 0, y: 0, scale: 0.4 }}
+                    animate={{
+                      opacity: [0, 1, 0],
+                      y: [-4, -26 - index * 2, -42 - index * 3],
+                      x: [0, index % 2 === 0 ? -10 : 10, index % 2 === 0 ? -18 : 18],
+                      scale: [0.4, 1, 0.7],
+                      rotate: [0, 18, -18],
+                    }}
+                    transition={{ duration: 0.8, delay: index * 0.04, ease: "easeOut" }}
+                    className={`absolute ${position} h-2.5 w-2.5 rounded-sm ${
+                      index % 3 === 0
+                        ? "bg-yellow-400"
+                        : index % 3 === 1
+                          ? "bg-pink-400"
+                          : "bg-sky-400"
+                    }`}
+                  />
+                ))}
+              </div>
+              <div className="px-6 pb-6 pt-7 text-center">
+                <motion.div
+                  initial={{ scale: 0.7, rotate: -10 }}
+                  animate={{ scale: 1, rotate: 0 }}
+                  transition={{ type: "spring", stiffness: 380, damping: 18 }}
+                  className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-green-500 text-white shadow-lg shadow-green-500/30"
+                >
+                  <CheckCircle2 size={34} />
+                </motion.div>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white">
+                  Nice!
+                </h3>
+                <p className="mt-2 text-sm text-gray-600 dark:text-gray-300">
+                  {commentSuccess}
+                </p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
