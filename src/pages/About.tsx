@@ -1,5 +1,4 @@
 import { motion } from "framer-motion";
-import { useTheme } from "../hooks/useTheme";
 import {
   Calendar,
   MapPin,
@@ -9,8 +8,6 @@ import {
 } from "lucide-react";
 
 const About = () => {
-  const { isDark } = useTheme();
-
   const experiences = [
     {
       title: "Full Stack Developer",

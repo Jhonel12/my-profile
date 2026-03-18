@@ -23,7 +23,6 @@ import {
   serverTimestamp,
 } from "firebase/firestore";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
-import { useTheme } from "../hooks/useTheme";
 import { auth, db } from "../services/firebase";
 
 import { useState, useEffect } from "react";
@@ -43,7 +42,6 @@ const reactionsRef = doc(db, "pageReactions", "home");
 const commentsRef = collection(db, "pageReactions", "home", "comments");
 
 const Home = () => {
-  const { isDark } = useTheme();
   const skills = [
     {
       icon: Code,
