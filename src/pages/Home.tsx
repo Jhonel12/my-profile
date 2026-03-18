@@ -24,6 +24,7 @@ import {
 } from "firebase/firestore";
 import { onAuthStateChanged, signInAnonymously } from "firebase/auth";
 import { auth, db } from "../services/firebase";
+import { useTheme } from "../hooks/useTheme";
 
 import { useState, useEffect } from "react";
 
@@ -42,6 +43,7 @@ const reactionsRef = doc(db, "pageReactions", "home");
 const commentsRef = collection(db, "pageReactions", "home", "comments");
 
 const Home = () => {
+  const { isDark } = useTheme();
   const skills = [
     {
       icon: Code,
@@ -393,7 +395,7 @@ const Home = () => {
     <div className="absolute inset-0 bg-gray-700 dark:bg-gray-700 rounded-full p-1 transition-all duration-300 group-hover:rotate-6">
       <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
         <img
-          src="/avatar-placeholder.svg"
+          src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
           alt="Jhonel G. Mira"
           className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
           onError={(e) => {

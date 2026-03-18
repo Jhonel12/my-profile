@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
           <Link to="/" className="flex items-center space-x-3">
   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-600 dark:border-primary-400">
     <img
-      src="/avatar-placeholder.svg"
+      src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
       alt="Jhonel G. Mira"
       className="w-full h-full object-cover"
       onError={(e) => {
