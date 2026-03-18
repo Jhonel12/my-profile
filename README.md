@@ -1,213 +1,196 @@
-# Jhonel G. Mira - Portfolio Website
+# Jhonel G. Mira Portfolio
 
-A modern, responsive portfolio website built with React, TypeScript, and Vite. Features a clean design, smooth animations, and dark mode support.
+A personal portfolio website built with React, TypeScript, Vite, Tailwind CSS, and Firebase.
 
-## 🚀 Features
+This project includes:
 
-- **Modern Design**: Clean and professional portfolio layout
-- **Responsive**: Fully responsive design that works on all devices
-- **Dark Mode**: Toggle between light and dark themes
-- **Smooth Animations**: Powered by Framer Motion for engaging interactions
-- **TypeScript**: Full TypeScript support for better development experience
-- **Fast Performance**: Built with Vite for lightning-fast development and builds
-- **SEO Optimized**: Proper meta tags and semantic HTML structure
+- Public portfolio pages for Home, About, Projects, and Contact
+- Dark mode support
+- Smooth UI animations with Framer Motion
+- Firebase-powered contact form submissions
+- Admin login and protected inbox for viewing contact messages and feedback
 
-## 🛠️ Tech Stack
+## Live Project
 
-- **Frontend**: React 18, TypeScript
-- **Build Tool**: Vite
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Routing**: React Router DOM
-- **Linting**: ESLint
+Add your deployed URL here when ready.
 
-## 📁 Project Structure
+## Tech Stack
 
-```
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- React Router DOM
+- Firebase
+- ESLint
+
+## Project Structure
+
+```text
 src/
-├── components/          # Reusable UI components
-│   ├── Navbar.tsx      # Navigation component
-│   └── Footer.tsx      # Footer component
-├── pages/              # Page components
-│   ├── Home.tsx        # Home page
-│   ├── About.tsx       # About page
-│   ├── Projects.tsx    # Projects showcase
-│   └── Contact.tsx     # Contact form
-├── App.tsx             # Main app component
-├── main.tsx            # Entry point
-└── index.css           # Global styles
+  components/
+    Footer.tsx
+    Navbar.tsx
+    ProtectedRoute.tsx
+  config/
+    admin.ts
+  hooks/
+    useTheme.ts
+  pages/
+    About.tsx
+    AdminContacts.tsx
+    Contact.tsx
+    Home.tsx
+    Login.tsx
+    Projects.tsx
+  services/
+    firebase.ts
+  App.tsx
+  index.css
+  main.tsx
+  vite-env.d.ts
+public/
+  profile-image.jpg
+  jhonel-me.jpg
+  login.jpg
 ```
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
-- Node.js (version 16 or higher)
-- npm or yarn
+- Node.js 16 or higher
+- npm
 
 ### Installation
 
-1. Clone the repository:
+1. Clone the repository.
+
 ```bash
-git clone <repository-url>
-cd jhonel-portfolio
+git clone https://github.com/Jhonel12/my-profile.git
+cd my-profile
 ```
 
-2. Install dependencies:
+2. Install dependencies.
+
 ```bash
 npm install
 ```
 
-3. Start the development server:
+3. Create your local environment file.
+
+Windows:
+
+```bash
+copy .env.example .env
+```
+
+macOS/Linux:
+
+```bash
+cp .env.example .env
+```
+
+4. Open `.env` and add your own Firebase configuration values.
+
+Important:
+- Do not commit your real `.env` file
+- Do not put real API keys in the README
+- Keep only `.env.example` in the public repository
+
+5. Start the development server.
+
 ```bash
 npm run dev
 ```
 
-4. Open your browser and navigate to `http://localhost:3000`
+6. Open `http://localhost:3000`
 
-### Available Scripts
+## Environment Variables
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run preview` - Preview production build
-- `npm run lint` - Run ESLint
+This project uses Firebase config through Vite environment variables.
 
-## 🎨 Customization
+Use [`.env.example`](/e:/laragon/www/my-profile/.env.example) as the template:
 
-### Personal Information
+```env
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
+VITE_FIREBASE_MEASUREMENT_ID=your_measurement_id
+```
 
-Update the following files with your personal information:
+These values are used by [firebase.ts](/e:/laragon/www/my-profile/src/services/firebase.ts).
 
-- `src/pages/Home.tsx` - Hero section and skills
-- `src/pages/About.tsx` - Personal info, experience, and education
-- `src/pages/Projects.tsx` - Project showcase
-- `src/pages/Contact.tsx` - Contact information
-- `src/components/Footer.tsx` - Social links and contact details
+## Available Scripts
 
-### Profile Image
+```bash
+npm run dev
+```
 
-1. **Add your profile image:**
-   - Place your profile photo as `profile-image.jpg` in the `public/` directory
-   - Recommended size: 512x512 pixels (square aspect ratio)
-   - Supported formats: JPG, PNG, WebP
-   - The image will appear in:
-     - Home page hero section (large circular image)
-     - About page (medium circular image)
-     - Navigation bar (small circular image)
-
-2. **Image optimization tips:**
-   - Use a professional headshot with good lighting
-   - Keep file size under 500KB for fast loading
-   - Square aspect ratio works best
-   - Clear background recommended
-
-### Styling
-
-The project uses Tailwind CSS for styling. You can customize:
-
-- Colors in `tailwind.config.js`
-- Global styles in `src/index.css`
-- Component-specific styles in individual component files
-
-### Theme
-
-The website supports both light and dark modes. The theme toggle is available in the navigation bar and persists across sessions.
-
-## 📱 Pages
-
-### Home
-- Hero section with introduction
-- Skills overview
-- Call-to-action section
-
-### About
-- Personal information
-- Technical skills with progress bars
-- Work experience timeline
-- Education details
-
-### Projects
-- Project showcase with cards
-- Technology tags
-- Live demo and source code links
-- Project categories
-
-### Contact
-- Contact form with validation
-- Contact information
-- Availability status
-
-## 🔧 Configuration
-
-### Vite Configuration
-The build tool is configured in `vite.config.ts` with:
-- React plugin
-- Development server on port 3000
-- Auto-open browser
-
-### TypeScript Configuration
-TypeScript is configured in `tsconfig.json` with:
-- Strict mode enabled
-- React JSX support
-- Modern ES2020 target
-
-### Tailwind Configuration
-Tailwind CSS is configured in `tailwind.config.js` with:
-- Custom color palette
-- Custom fonts (Inter, JetBrains Mono)
-- Custom animations
-- Responsive breakpoints
-
-## 📦 Deployment
-
-### Build for Production
+Starts the Vite development server.
 
 ```bash
 npm run build
 ```
 
-This creates a `dist` folder with optimized production files.
+Builds the app for production into `dist/`.
 
-### Deploy to Vercel
-
-1. Install Vercel CLI:
 ```bash
-npm i -g vercel
+npm run preview
 ```
 
-2. Deploy:
+Previews the production build locally.
+
 ```bash
-vercel
+npm run lint
 ```
 
-### Deploy to Netlify
+Runs ESLint.
 
-1. Build the project:
+## Main Pages
+
+- `/` - Home page
+- `/about` - About page
+- `/projects` - Projects page
+- `/contact` - Contact form page
+- `/login` - Admin login
+- `/admin/contacts` - Protected admin inbox
+
+## Customization
+
+Update these files to personalize the portfolio:
+
+- [Home.tsx](/e:/laragon/www/my-profile/src/pages/Home.tsx)
+- [About.tsx](/e:/laragon/www/my-profile/src/pages/About.tsx)
+- [Projects.tsx](/e:/laragon/www/my-profile/src/pages/Projects.tsx)
+- [Contact.tsx](/e:/laragon/www/my-profile/src/pages/Contact.tsx)
+- [Footer.tsx](/e:/laragon/www/my-profile/src/components/Footer.tsx)
+- [admin.ts](/e:/laragon/www/my-profile/src/config/admin.ts)
+
+Profile images are stored in `public/`.
+
+## Deployment
+
+Build the project first:
+
 ```bash
 npm run build
 ```
 
-2. Upload the `dist` folder to Netlify
+Then deploy the generated `dist/` folder to services like Vercel or Netlify.
 
-## 🤝 Contributing
+## Notes For Public Repos
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+- Firebase config should stay in local `.env` files, not inside source code
+- Review your Firebase Authentication settings and Firestore security rules before publishing
+- If any Firebase values were previously committed, rotate them in Firebase Console
 
-## 📄 License
+## Contact
 
-This project is open source and available under the [MIT License](LICENSE).
-
-## 📞 Contact
-
-- **Name**: Jhonel G. Mira
-- **Email**: jhonel.mira@example.com
-- **Location**: Manila, Philippines
-
----
-
-Built with ❤️ using React, TypeScript, and Vite
+- Name: Jhonel G. Mira
+- Email: `jhonelmira@gmail.com`
+- Location: Cagayan de Oro, Philippines
