@@ -5,7 +5,7 @@ This directory contains static assets that will be served directly by the web se
 ## Image Placement
 
 ### Profile Images
-- Place your profile image as `profile-image.jpg` in this directory
+- If you want to use a personal photo locally, keep it out of Git and use your own ignored image file
 - Recommended size: 512x512 pixels or larger (square aspect ratio)
 - Supported formats: JPG, PNG, WebP
 - The image will be automatically resized and optimized by the browser
@@ -17,7 +17,7 @@ This directory contains static assets that will be served directly by the web se
 ## File Structure
 ```
 public/
-├── profile-image.jpg     # Your main profile photo
+├── avatar-placeholder.svg # Public-safe fallback avatar
 ├── project-screenshots/  # Screenshots of your projects
 ├── favicon.ico          # Website favicon
 └── README.md           # This file

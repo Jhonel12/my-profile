@@ -93,7 +93,7 @@ const About = () => {
                     <div className="absolute inset-0 bg-gradient-to-br from-primary-500 to-purple-600 rounded-full p-1">
                       <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
                         <img
-                           src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
+                           src="/avatar-placeholder.svg"
                           alt="Jhonel G. Mira"
                           className="w-full h-full object-cover rounded-full"
                           onError={(e) => {

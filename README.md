@@ -51,8 +51,7 @@ src/
   main.tsx
   vite-env.d.ts
 public/
-  profile-image.jpg
-  jhonel-me.jpg
+  avatar-placeholder.svg
   login.jpg
 ```
 

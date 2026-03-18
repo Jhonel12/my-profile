@@ -31,3 +31,8 @@ dist-ssr
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Personal photos
+public/profile-image.jpg
+public/jhonel-me.jpg
+public/jhonel-me1.png

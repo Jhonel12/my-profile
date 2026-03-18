@@ -395,13 +395,13 @@ const Home = () => {
     <div className="absolute inset-0 bg-gray-700 dark:bg-gray-700 rounded-full p-1 transition-all duration-300 group-hover:rotate-6">
       <div className="w-full h-full rounded-full overflow-hidden bg-white dark:bg-dark-800 p-1">
         <img
-          src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"} // Replace with your image path
+          src="/avatar-placeholder.svg"
           alt="Jhonel G. Mira"
           className="w-full h-full object-cover rounded-full transition-transform duration-300 group-hover:scale-110"
           onError={(e) => {
             if (!e.currentTarget.dataset.fallback) {
               e.currentTarget.dataset.fallback = "true";
-              e.currentTarget.src = "/profile-image.jpg";
+              e.currentTarget.src = "/avatar-placeholder.svg";
             }
           }}
         />

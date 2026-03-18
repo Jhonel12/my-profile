@@ -39,14 +39,14 @@ const Navbar: React.FC = () => {
           <Link to="/" className="flex items-center space-x-3">
   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-600 dark:border-primary-400">
     <img
-      src={isDark ? "/jhonel-me.jpg" : "/profile-image.jpg"}
+      src="/avatar-placeholder.svg"
       alt="Jhonel G. Mira"
       className="w-full h-full object-cover"
       onError={(e) => {
         const target = e.currentTarget as HTMLImageElement;
         if (!target.dataset.fallback) {
           target.dataset.fallback = "true";
-          target.src = "/profile-image.jpg";
+          target.src = "/avatar-placeholder.svg";
         }
       }}
     />
